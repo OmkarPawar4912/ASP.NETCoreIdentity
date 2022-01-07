@@ -19,87 +19,19 @@ MVC User Registration &amp; Login with ASP.NET Core Identity
 ----------------------------------------------
 4) create the physical DB through DB Migration
 ----------------------------------------------
-	Add-Migration "InitialCreate"
-    Update-Database
+
+	Add-Migration InitialCreate
+        Update-Database
+
 ----------------------------------------------
 5) add MVC layout :- partial layout for logged in user.(Views/Shared/_Layout.cshml) 
 ----------------------------------------------
     <partial name="_LoginPartial" ></partial>
+
 ----------------------------------------------
 6) add css style sheet (wwwroot/css/site.css)
-----------------------------------------------
-/*for tab control*/
-div.login-logout-tab div.card-header {
-    padding: 0px 0px 12px 0px;
-}
-
-div.login-logout-tab ul.nav-tabs {
-    margin: 0px 0px -12px 0px;
-}
-
-div.login-logout-tab li.nav-item {
-    width: 50%;
-}
-
-div.login-logout-tab a.nav-link {
-    font-size: 25px;
-    color: #495057;
-    text-align:center;
-}
-
-div.card-content{
-    padding : 10px 20px;
-}
-
-/*login form*/
-div.login-form-icon{
-    text-align:center;
-}
-----------------------------------------------
 7) create _AuthLayout.cshtml in /Areas/Identity/Pages
 8) Add > NewItem. Select Razor Layout > _AuthLayout.cshtml
-----------------------------------------------
-@{
-    Layout = "/Views/Shared/_Layout.cshtml";
-}
-
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <div class="card login-logout-tab">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link" href='/Identity/Account/Login'>Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href='/Identity/Account/Register'>Sign Up</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-content">
-                <div class="col-md-12">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts{
-    @RenderSection("Scripts", required: false)
-    <script>
-        $(function () {
-            var current = location.pathname;
-            $('.nav-tabs li a').each(function () {
-                var $this = $(this);
-                if (current.indexOf($this.attr('href')) !== -1) {
-                    $this.addClass('active');
-                }
-            })
-        })
-  <script>
-}
-----------------------------------------------
 9)  Open => /Areas/Identity/Pages/Account as Register.cshtml
 10) InputModel update properties for first name and last name.
 ----------------------------------------------
@@ -126,60 +58,6 @@ div.login-form-icon{
     var result = await _userManager.CreateAsync(user, Input.Password);
 ----------------------------------------------
 12) Update  Register.cshtml
-----------------------------------------------
-@page
-@model RegisterModel
-
-@{ ViewData["Title"] = "Register"; }
-
-@{ Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml"; }
-
-<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Input.FirstName"></label>
-                <input asp-for="Input.FirstName" class="form-control" />
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Input.LastName"></label>
-                <input asp-for="Input.LastName" class="form-control" />
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Input.Email"></label>
-        <input asp-for="Input.Email" class="form-control" />
-        <span asp-validation-for="Input.Email" class="text-danger"></span>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-</form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" ></partial>
-}
-----------------------------------------------
 13) Confirmation of email address before first login disabled using Following Code.
 	(/Areas/Identity/IdentityHostingStartup.cs.)
 ----------------------------------------------
@@ -189,63 +67,9 @@ div.login-form-icon{
 		options.SignIn.RequireConfirmedAccount = false;
 		 ...
     }
+    
 ----------------------------------------------
 14) Update  Login.cshtml
-----------------------------------------------
-@page
-@model LoginModel
-
-@{ViewData["Title"] = "Login";}
-
-
-@{
-    Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
-}
-<div class="col-md-10 offset-1">
-    <div class="login-form-icon">
-        <i class="fas fa-user-circle fa-9x text-secondary"></i>
-    </div>
-    <form id="account" method="post">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                </div>
-                <input asp-for="Input.Email" class="form-control" placeholder="Email Address" />
-            </div>
-            <span asp-validation-for="Input.Email" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                </div>
-                <input asp-for="Input.Password" class="form-control" placeholder="Password" />
-            </div>
-            <span asp-validation-for="Input.Password" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <div class="checkbox">
-                <label asp-for="Input.RememberMe">
-                    <input asp-for="Input.RememberMe" />
-                    @Html.DisplayNameFor(m => m.Input.RememberMe)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
-        </div>
-    </form>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" ></partial>
-}
 ----------------------------------------------
 15) Redirect already logged in user back to home page from login or registration page
     update onGetAsync method statements in both login and register page.
@@ -267,6 +91,9 @@ div.login-form-icon{
 	{
 		...
 	}
+	
 ----------------------------------------------
+
 Refer this for more details 
+
 https://www.codaffection.com/asp-net-core-article/asp-net-core-identity-for-user-authentication-and-registration/
