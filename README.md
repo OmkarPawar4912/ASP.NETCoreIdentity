@@ -70,7 +70,6 @@ MVC User Registration &amp; Login with ASP.NET Core Identity
     
 ----------------------------------------------
 14) Update  Login.cshtml
-----------------------------------------------
 15) Redirect already logged in user back to home page from login or registration page
     update onGetAsync method statements in both login and register page.
 ----------------------------------------------
