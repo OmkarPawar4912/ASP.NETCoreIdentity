@@ -1,4 +1,4 @@
-# ASP.NETCoreIdentity
+# ASP.NET Core Identity
 MVC User Registration &amp; Login with ASP.NET Core Identity
 1) Add > New Scaffolded Item > select Identity
 2) update Startup.cs 
